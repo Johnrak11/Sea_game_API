@@ -15,4 +15,8 @@ class Matching extends Model
         'time',
         'event_id'
     ];
+    public function events()
+    {
+        return $this->belongsTo(Event::class);
+    }
 }

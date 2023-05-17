@@ -13,7 +13,8 @@ class StadiumController extends Controller
      */
     public function index()
     {
-        //
+        $stadiums = Stadium::all();
+        return response()->json(['success' => true, 'data' => $stadiums], 200);
     }
 
     /**

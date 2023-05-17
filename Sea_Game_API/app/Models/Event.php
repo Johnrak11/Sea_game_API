@@ -28,4 +28,9 @@ class Event extends Model
 
         return $this->belongsTo(Stadium::class);
     }
+    
+    public function matchings()
+    {
+        return $this->hasMany(Matching::class);
+    }
 }

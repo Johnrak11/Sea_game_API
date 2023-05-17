@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Event;
-use App\Http\Requests\UpdateEventRequest;
 use App\Models\Matching;
 use App\Models\Stadium;
 use Illuminate\Http\Request;
@@ -17,6 +16,11 @@ class EventController extends Controller
     public function index()
     {
         //
+        $events = Event::all();
+        foreach ($events as $event) {
+            $event->matchings;
+        };
+        return $events;
     }
 
     /**
@@ -41,46 +45,46 @@ class EventController extends Controller
                 'after_or_equal:today',
                 'before_or_equal:next year',
             ],
-            'category_id' => 'required|integer|',
-            'stadium_id' => 'required|integer|',
+            'category_id' => 'required|integer|exists:categories,id',
+            'stadium_id' => 'required|integer|exists:stadia,id',
         ];
         $matchingRules = [
             'team1' => 'required|string|max:50',
             'team2' => 'required|string|max:50',
-            'time' => 'required|date_format:H:i'
+            'time' => 'required|date_format:H:i:s'
         ];
         // =====validate===
         // event
         $event = $request['event'];
         $eventValidated = Validator::make($event, $EventRules);
         // matching
-        foreach ($request['matching'] as $matching) {
-            $matchingValidated = Validator::make($matching, $matchingRules);
-            if ($matchingValidated->fails()) {
-                return response()->json([$matchingValidated->errors()], 400);
+        if ($request['matching']) {
+            foreach ($request['matching'] as $matching) {
+                $matchingValidated = Validator::make($matching, $matchingRules);
+                if ($matchingValidated->fails()) {
+                    return response()->json([$matchingValidated->errors()], 400);
+                }
             }
         }
         if ($eventValidated->fails()) {
             return response()->json([$eventValidated->errors()], 400);
         } else {
             $stadium = Stadium::find($event['stadium_id']);
-            if ($stadium === null) {
-                return response()->json(['success' => false, 'message' => 'Undefined stadium'], 400);
-            } else {
-                // create record available_ticket
-                $available_ticket = intval($stadium['zoneA']) + intval($stadium['zoneB']);
-                $event['available_ticket'] = $available_ticket;
-                $eventCreate = Event::create($event);
-                $matchings = [];
+            // create record available_ticket
+            $available_ticket = intval($stadium['zoneA']) + intval($stadium['zoneB']);
+            $event['available_ticket'] = $available_ticket;
+            $eventCreate = Event::create($event);
+            $matchings = [];
 
-                // create matching
+            // create matching
+            if ($request['matching']) {
                 foreach ($request['matching'] as $matching) {
                     $matching['event_id'] = $eventCreate->id;
                     $matchingCreate = Matching::create($matching);
                     $matchings[] = $matchingCreate;
                 }
-                return response()->json(['success' => true, 'message' => 'Event created successful', 'data' => ['event' => $eventCreate, 'matching schedules' => $matchings]], 200);
             }
+            return response()->json(['success' => true, 'message' => 'Event created successful', 'data' => ['event' => $eventCreate, 'matching schedules' => $matchings]], 200);
         }
     }
 
@@ -90,25 +94,44 @@ class EventController extends Controller
     public function show(string $id)
     {
         $event = Event::find($id);
-        return response()->json(['success' => true, 'data' => $event], 200);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Event $event)
-    {
-        //
+        if ($event === null) {
+            return response()->json(['success' => false, 'data' => "Undefined event id: " . $id], 400);
+        };
+        $event->matchings;
+        return response()->json(['success' => true, 'data' =>  $event], 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateEventRequest $request, Event $event)
+    public function update(Request $request, string $id)
     {
-        //
+        $eventRules = [
+            'name' => 'required|string|min:5',
+            'description' => 'required|string|max:200',
+            'date' => [
+                'required',
+                'date_format:Y-m-d',
+                'after_or_equal:today',
+                'before_or_equal:next year',
+            ],
+            'available_ticket' => 'required|integer',
+            'category_id' => 'required|integer|exists:categories,id',
+            'stadium_id' => 'required|integer|exists:stadia,id',
+        ];
+        $eventValidated = Validator::make($request->all(), $eventRules);
+        if ($eventValidated->fails()) {
+            return response()->json([$eventValidated->errors()], 400);
+        } else {
+            $eventUpdate = Event::find($id);
+            if ($eventUpdate === null) {
+                return response()->json(['success' => false, 'message' => 'Undefined event id: ' . $id], 400);
+            } else {
+                $eventUpdate->update($request->all());
+                return response()->json(['success' => true, 'message' => 'Event updated successfully', 'data' => $eventUpdate], 200);
+            }
+        }
     }
-
     /**
      * Remove the specified resource from storage.
      */
@@ -116,13 +139,22 @@ class EventController extends Controller
     {
         // delete event
         $event = Event::find($id);
+        if ($event === null) {
+            return response()->json(['success' => false, 'message' => 'Undefined event id : ' . $id], 401);
+        };
         $event->delete();
         return response()->json(['success' => true, 'message' => 'Event id : ' . $id . ' deleted successful'], 200);
     }
 
+    /**
+     * Search the specified resource from storage.
+     */
     public function search(string $keyword)
     {
         $events = Event::where('name', 'like', '%' . $keyword . '%')->get();
+        if ($events !== []) {
+            return response()->json(['success' => false, 'message' => 'Result not found'], 401);
+        };
         return response()->json(['success' => true, 'data' => $events], 200);
     }
 }

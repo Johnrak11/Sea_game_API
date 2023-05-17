@@ -18,7 +18,7 @@ class EventSeeder extends Seeder
             [
                 'name' => "Men's U-22 Football",
                 'description' => "The Football Federation of Cambodia on Tuesday, said that all free tickets for the public to watch the SEA Games, men’s football on April 29, has been distributed.",
-                'available_ticket' => 30000,
+                'available_ticket' => 8000,
                 'date' => "2023-05-17",
                 'category_id' => 2,
                 'stadium_id' => 3,
@@ -26,7 +26,7 @@ class EventSeeder extends Seeder
             [
                 'name' => "Woomen's U-22 Football",
                 'description' => "The Football Federation of Cambodia on Tuesday, said that all free tickets for the public to watch the SEA Games, men’s football on April 29, has been distributed.",
-                'available_ticket' => 30000,
+                'available_ticket' => 80000,
                 'date' => "2023-05-17",
                 'category_id' => 3,
                 'stadium_id' => 1,
