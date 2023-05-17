@@ -1,0 +1,419 @@
+{
+	"info": {
+		"_postman_id": "921576d1-9b6e-4814-9136-7252d969f3a8",
+		"name": "Sea Game API",
+		"description": "Sea game api building",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "27294239"
+	},
+	"item": [
+		{
+			"name": "Events",
+			"item": [
+				{
+					"name": "Search events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/events/search/Football",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"events",
+								"search",
+								"Football"
+							]
+						},
+						"description": "**Route**: `/events/search/{keyword}`\n\n**Method**: GET\n\n**Description**: Searches for events based on the provided keyword.\n\n**Parameters**:\n\n- `{keyword}` (string, required): The keyword to search for in event names.\n    \n\n**Response**:\n\n- Success: Returns a JSON response with a success flag and the matching events data.\n- Error: Returns a JSON response with a failure flag and a message if no results are found."
+					},
+					"response": []
+				},
+				{
+					"name": "Get event details by id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/events/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"events",
+								"2"
+							]
+						},
+						"description": "**Route**: `/events/{id}`\n\n**Method**: GET\n\n**Description**: Retrieves the details of a specific event based on the provided ID.\n\n**Parameters**:\n\n- `{id}` (string, required): The ID of the event to retrieve.\n    \n\n**Response**:\n\n- Success: Returns a JSON response with a success flag and the event details, including its matchings.\n- Error: Returns a JSON response with a failure flag and a message if the event ID is undefined or not found."
+					},
+					"response": []
+				},
+				{
+					"name": "Create event",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"event\": {\r\n        \"name\": \"Woman's volleyball\",\r\n        \"description\": \"football the best\",\r\n        \"date\": \"2023-05-17\",\r\n        \"category_id\": 10,\r\n        \"stadium_id\": 1\r\n    },\r\n    \"matching\": [\r\n        {\r\n            \"team1\": \"Indonesian\",\r\n            \"team2\": \"Philippines\",\r\n            \"time\": \"20:00:00\"\r\n        },\r\n        {\r\n            \"team1\": \"Cambodia\",\r\n            \"team2\": \"Philippines\",\r\n            \"time\": \"12:00:00\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/events",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"events"
+							]
+						},
+						"description": "**Route**: `/events`\n\n**Method**: POST\n\n**Description**: Creates a new event with its associated matchings.\n\n**Request**:\n\n- Body:\n    - `event` (object):\n        - `name` (string, required): The name of the event (minimum 5 characters).\n        - `description` (string, required): The description of the event (maximum 200 characters).\n        - `date` (string, required): The date of the event (format: \"Y-m-d\", must be after or equal to today and before or equal to the next year).\n        - `category_id` (integer, required): The ID of the event category (must exist in the `categories` table).\n        - `stadium_id` (integer, required): The ID of the stadium (must exist in the `stadia` table).\n    - `matching` (array, optional): An array of matchings (each matching has the following properties):\n        - `team1` (string, required): The name of team 1 (maximum 50 characters).\n        - `team2` (string, required): The name of team 2 (maximum 50 characters).\n        - `time` (string, required): The time of the matching (format: \"H:i:s\").\n\n**Response**:\n\n- Success: Returns a JSON response with a success message, the created event, and the matching schedules.\n- Error: Returns a JSON response with the validation errors if the request data fails the validation.\n    \n\n**Example**:\n\n- Request:\n    - Method: POST\n    - Endpoint: `/events`\n    - Body:\n\n{  \n\"event\": {  \n\"name\": \"Football Tournament\",  \n\"description\": \"An exciting football tournament\",  \n\"date\": \"2023-08-15\",  \n\"category_id\": 1,  \n\"stadium_id\": 2  \n},  \n\"matching\": \\[  \n{  \n\"team1\": \"Team A\",  \n\"team2\": \"Team B\",  \n\"time\": \"18:00:00\"  \n},  \n{  \n\"team1\": \"Team C\",  \n\"team2\": \"Team D\",  \n\"time\": \"20:00:00\"  \n}  \n\\]  \n}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete event",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/events/5",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"events",
+								"5"
+							]
+						},
+						"description": "**Route**: `/events/{id}`\n\n**Method**: DELETE\n\n**Description**: Deletes a specific event based on the provided ID.\n\n**Parameters**:\n\n- `{id}` (string, required): The ID of the event to delete.\n    \n\n**Response**:\n\n- Success: Returns a JSON response with a success flag and a message indicating the successful deletion of the event.\n- Error: Returns a JSON response with a failure flag and a message if the event ID is undefined or not found."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Event",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Woman's volleyball\",\r\n    \"description\": \"Volleyball has been a regular Southeast Asian Games sport since the 1977 edition, with an exception in 1999 event.\",\r\n    \"date\": \"2023-05-20\",\r\n    \"category_id\": 1,\r\n    \"stadium_id\": 2,\r\n    \"available_ticket\": 30000\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/events/4",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"events",
+								"4"
+							]
+						},
+						"description": "**Route**: `/events/{id}`\n\n**Method**: PUT\n\n**Description**: Updates a specific event based on the provided ID.\n\n**Parameters**:\n\n- `{id}` (string, required): The ID of the event to update.\n    \n\n**Request Body**:\n\n- `name` (string, required): The name of the event (minimum 5 characters).\n- `description` (string, required): The description of the event (maximum 200 characters).\n- `date` (string, required): The date of the event (format: Y-m-d, after or equal to today, before or equal to next year).\n- `available_ticket` (integer, required): The number of available tickets for the event.\n- `category_id` (integer, required): The ID of the category associated with the event.\n- `stadium_id` (integer, required): The ID of the stadium associated with the event.\n    \n\n**Response**:\n\n- Success: Returns a JSON response with a success flag, a message indicating the successful update, and the updated event data.\n- Error: Returns a JSON response with a failure flag and a message if the event ID is undefined or if the request fails validation.\n    \n\n**Example**:\n\n- Request:\n    - Method: PUT\n    - Endpoint: `/events/1`\n    - { \"name\": \"Updated Event\", \"description\": \"Updated event description\", \"date\": \"2023-05-25\", \"available_ticket\": 100, \"category_id\": 2, \"stadium_id\": 3}\n- Response:\n    - { \"success\": true, \"message\": \"Event updated successfully\", \"data\": { \"id\": 1, \"name\": \"Updated Event\", \"description\": \"Updated event description\", \"date\": \"2023-05-25\", \"available_ticket\": 100, \"category_id\": 2, \"stadium_id\": 3, \"created_at\": \"2023-05-17T12:00:00Z\", \"updated_at\": \"2023-05-17T14:30:00Z\" }}  \n        \n    - { \"success\": false, \"message\": \"Undefined event id: 1\"}  \n        \n    - { \"name\": \\[ \"The name field is required.\" \\], \"description\": \\[ \"The description field is required.\" \\], \"date\": \\[ \"The date field is required.\" \\], \"available_ticket\": \\[ \"The available ticket field is required.\" \\], \"category_id\": \\[ \"The category id field is required.\" \\], \"stadium_id\": \\[ \"The stadium id field is required.\" \\]}"
+					},
+					"response": []
+				},
+				{
+					"name": "Get all events",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/events",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"events"
+							]
+						},
+						"description": "**Route**: `/events`\n\n**Method**: GET\n\n**Description**: Fetches all events along with their corresponding matchings.\n\n**Request**:\n\n- No parameters required.\n    \n\n**Response**:\n\n- Success: Returns an array of events and their associated matchings.\n- Error: Returns an appropriate error message if any issue occurs."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder we use to manage the list of routes that related to the events"
+		},
+		{
+			"name": "Tickets",
+			"item": [
+				{
+					"name": "Buy ticket",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"zone\" : \"b\",\r\n    \"event_id\" :1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/events/booking",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"events",
+								"booking"
+							]
+						},
+						"description": "**Route**: `events/bookings`\n\n**Method**: POST\n\n**Description**: Creates a new booking for a specific event zone.\n\n**Request Body**:\n\n- `zone` (string, required): The zone for which the booking is made.\n- `event_id` (integer, required): The ID of the event for which the booking is made.\n    \n\n**Response**:\n\n- Success: Returns a JSON response with a success flag, a message indicating the successful booking, and the booking data.\n- Error: Returns a JSON response with a failure flag and a message if the request fails validation or if the ticket for the specified zone is full.\n    \n\n**Example**:\n\n- Request:\n    - Method: POST\n    - Endpoint: `/bookings`\n    - { \"zone\": \"A\", \"event_id\": 1}\n- Response:\n    - { \"success\": true, \"message\": \"Booking ticket successful\", \"data\": { \"id\": 1, \"booking_date\": \"2023-05-17 14:30:00\", \"price\": \"Free\", \"zone\": \"A\", \"event_id\": 1, \"created_at\": \"2023-05-17T14:30:00Z\", \"updated_at\": \"2023-05-17T14:30:00Z\" }}  \n        \n    - { \"zone\": \\[ \"The zone field is required.\" \\], \"event_id\": \\[ \"The event id field is required.\" \\]}  \n        \n    - { \"success\": true, \"message\": \"Ticket on zone A has been full\"}  \n        \n    - { \"success\": true, \"message\": \"Ticket on zone B has been full\"}"
+					},
+					"response": []
+				}
+			],
+			"description": "This folder we use to manage the list of routes that related to the Ticket"
+		},
+		{
+			"name": "Matchings",
+			"item": [
+				{
+					"name": "Get matching form event ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/matching/10",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"matching",
+								"10"
+							]
+						},
+						"description": "**Route**: `/events/{id}`\n\n**Method**: GET\n\n**Description**: Retrieves the matchings associated with a specific event.\n\n**Parameters**:\n\n- `id` (string, required): The ID of the event.\n    \n\n**Response**:\n\n- Success: Returns a JSON response with a success flag and the matchings associated with the event.\n- Error: Returns a JSON response with a success flag and a message indicating that the event ID is undefined."
+					},
+					"response": []
+				},
+				{
+					"name": "Matching update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"team1\": \"Cambodia\",\r\n    \"team2\": \"Philippines\",\r\n    \"time\": \"12:10:00\",\r\n    \"event_id\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/matching/2",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"matching",
+								"2"
+							]
+						},
+						"description": "**Route**: `/matchings/{id}`\n\n**Method**: PUT\n\n**Description**: Updates a matching for a specific event.\n\n**Parameters**:\n\n- `id` (string, required): The ID of the matching to be updated.\n    \n\n**Request Body**:\n\n- `team1` (string, required): The name of Team 1.\n- `team2` (string, required): The name of Team 2.\n- `time` (string, required): The time of the matching in the format \"HH:MM:SS\".\n- `event_id` (integer, required): The ID of the associated event.\n    \n\n**Response**:\n\n- Success: Returns a JSON response with a success flag, a message indicating the successful update, and the updated matching data.\n- Error: Returns a JSON response with a success flag and a message indicating that the matching ID is undefined or validation errors occurred.\n    \n\n**Example**:\n\n- Request:\n    - Method: PUT\n    - Endpoint: `/matchings/1`\n    - { \"team1\": \"Team X\", \"team2\": \"Team Y\", \"time\": \"19:30:00\", \"event_id\": 1}\n- Response:\n    - { \"success\": true, \"message\": \"Matching updated successfully\", \"data\": { \"id\": 1, \"team1\": \"Team X\", \"team2\": \"Team Y\", \"time\": \"19:30:00\", \"event_id\": 1, \"created_at\": \"2023-05-17T14:30:00Z\", \"updated_at\": \"2023-05-17T14:35:00Z\" }}\n    - { \"success\": false, \"message\": \"Undefined matching id: 1\"}{ \"success\": false, \"message\": { \"team1\": \\[ \"The team1 field is required.\" \\], \"team2\": \\[ \"The team2 field is required.\" \\] }}"
+					},
+					"response": []
+				},
+				{
+					"name": "Create matching",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"team1\": \"Cambodia\",\r\n    \"team2\": \"Philippines\",\r\n    \"time\": \"12:10:00\",\r\n    \"event_id\": 10\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/matching",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"matching"
+							]
+						},
+						"description": "**Route**: `/matchings`\n\n**Method**: POST\n\n**Description**: Creates a new matching.\n\n**Parameters**:\n\n- `team1` (string, required): The name of the first team.\n- `team2` (string, required): The name of the second team.\n- `time` (string, required): The time of the match in the format \"H:i:s\".\n- `event_id` (integer, required): The ID of the associated event.\n    \n\n**Response**:\n\n- Success: Returns a JSON response with a success flag, a message indicating the successful creation, and the data of the newly created matching.\n- Error: Returns a JSON response with an array of validation errors if the input data fails the validation rules.\n    \n\n**Example**:\n\n- Request:\n    - Method: POST\n    - Endpoint: `/matchings`\n    - { \"team1\": \"Team A\", \"team2\": \"Team B\", \"time\": \"18:00:00\", \"event_id\": 1}\n- Response:\n    - { \"success\": true, \"message\": \"Matching created successfully\", \"data\": { \"id\": 1, \"team1\": \"Team A\", \"team2\": \"Team B\", \"time\": \"18:00:00\", \"event_id\": 1, \"created_at\": \"2023-05-17T12:34:56.000000Z\", \"updated_at\": \"2023-05-17T12:34:56.000000Z\" }}\n    - { \"errors\": { \"team1\": \\[ \"The team1 field is required.\" \\] }}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete matching",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/matching/20",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"matching",
+								"20"
+							]
+						},
+						"description": "**Route**: `/matchings/{id}`\n\n**Method**: DELETE\n\n**Description**: Deletes a matching.\n\n**Parameters**:\n\n- `id` (string, required): The ID of the matching to be deleted.\n    \n\n**Response**:\n\n- Success: Returns a JSON response with a success flag and a message indicating the successful deletion.\n- Error: Returns a JSON response with a success flag and a message indicating that the matching ID is undefined."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder we use to manage the list of routes that related to the matching"
+		},
+		{
+			"name": "Categories",
+			"item": [
+				{
+					"name": "Get categories",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/categories",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"categories"
+							]
+						},
+						"description": "**Route**: `/categories`\n\n**Method**: GET\n\n**Description**: Retrieves all categories.\n\n**Response**:\n\n- Success: Returns a JSON response with a success flag and an array of categories."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder we use to manage the list of routes that related to the categories"
+		},
+		{
+			"name": "Stadiums",
+			"item": [
+				{
+					"name": "Get Stadiums",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/stadiums",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"stadiums"
+							]
+						},
+						"description": "**Route**: `/stadiums`\n\n**Method**: GET\n\n**Description**: Retrieves all stadiums.\n\n**Response**:\n\n- Success: Returns a JSON response with a success flag and an array of stadiums."
+					},
+					"response": []
+				}
+			],
+			"description": "This folder we use to manage the list of routes that related to the stadium"
+		}
+	]
+}

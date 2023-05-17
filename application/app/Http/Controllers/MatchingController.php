@@ -98,11 +98,11 @@ class MatchingController extends Controller
      */
     public function destroy(string $id)
     {
-        // delete event
-        $matching = Event::find($id);
+        $matching = Matching::find($id);
         if ($matching === null) {
             return response()->json(['success' => false, 'message' => 'Undefined matching id : ' . $id], 400);
         };
+
         $matching->delete();
         return response()->json(['success' => true, 'message' => 'Matching id : ' . $id . ' deleted successful'], 200);
     }

@@ -152,7 +152,7 @@ class EventController extends Controller
     public function search(string $keyword)
     {
         $events = Event::where('name', 'like', '%' . $keyword . '%')->get();
-        if ($events !== []) {
+        if ($events->all() === []) {
             return response()->json(['success' => false, 'message' => 'Result not found'], 401);
         };
         return response()->json(['success' => true, 'data' => $events], 200);
